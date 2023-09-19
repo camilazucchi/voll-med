@@ -1,0 +1,2 @@
+UPDATE medicos SET ativos = TRUE WHERE ativos IS NULL;
+ALTER TABLE medicos ALTER COLUMN ativos SET NOT NULL;
