@@ -41,7 +41,6 @@ public class MedicoController {
         // Aqui, um novo objeto "Medico" é criado com base nos dados recebidos na solicitação e é salvo no banco
         // de dados usando o método "save" do "MedicoRepository".
         var uri = uriBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
-
         return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
     }
 
@@ -60,7 +59,6 @@ public class MedicoController {
         // Esse método atualiza um registro no banco de dados.
         var medico = repository.getReferenceById(dados.id());
         medico.atualizarInformacoes(dados);
-
         return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
     }
 
@@ -70,14 +68,12 @@ public class MedicoController {
         // Esse método torna inativo um registro no banco de dados.
         var medico = repository.getReferenceById(id);
         medico.excluir();
-
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoMedico> detalhar(@PathVariable Long id) {
         var medico = repository.getReferenceById(id);
-
         return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
     }
 
