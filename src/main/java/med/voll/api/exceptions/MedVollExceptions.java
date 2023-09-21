@@ -2,6 +2,7 @@ package med.voll.api.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -14,6 +15,14 @@ public class MedVollExceptions {
     // exceção do tipo "EntityNotFoundException" é lançada durante o processamento de uma requisição HTTP.
     public ResponseEntity<String> handleResourceNotFoundException() {
         return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    // Essa anotação é usada para tratar exceções do tipo "MethodNotAllowedException".
+    // É lançada quando ocorre uma validação de argumento em um método de controle e essa validação falha devido
+    // a dados de entrada inválidos.
+    public ResponseEntity<String> handleBadRequestException() {
+        return ResponseEntity.badRequest().build();
     }
 
 }
