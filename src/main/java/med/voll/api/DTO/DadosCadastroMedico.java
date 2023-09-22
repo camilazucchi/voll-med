@@ -8,20 +8,20 @@ import jakarta.validation.constraints.Pattern;
 import med.voll.api.enums.Especialidade;
 
 public record DadosCadastroMedico(
-        @NotBlank
+        @NotBlank(message = "{validation.notblank}")
         // A anotação "@NotBlank" é apenas para campos do tipo String.
         String nome,
-        @NotBlank
+        @NotBlank(message = "{validation.notblank}")
         @Email
         String email,
-        @NotBlank
+        @NotBlank(message = "{validation.notblank}")
         String telefone,
-        @NotBlank
+        @NotBlank(message = "{validation.notblank}")
         @Pattern(regexp = "\\d{4,6}")
         String crm,
-        @NotNull
+        @NotNull(message = "{validation.notnull}")
         Especialidade especialidade,
-        @NotNull
+        @NotNull(message = "{validation.notnull}")
         @Valid
         DadosEndereco endereco) {
 }
