@@ -1,9 +1,12 @@
 package med.voll.api.service.security;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // A classe "SeucrityConfigurations" é uma classe de configuração Spring Security. Ela é responsável por configurar
 // a segurança no nosso aplicativo Spring Boot.
@@ -22,12 +26,22 @@ import org.springframework.security.web.SecurityFilterChain;
 // A anotação "@EnableWebSecurity" ativa o suporte à segurança da web.
 public class SecurityConfigurations {
 
+    @Autowired
+    private SecurityFilter securityFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+       httpSecurity
+               .csrf(AbstractHttpConfigurer::disable)
+               .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                       .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                       .anyRequest().authenticated())
+               .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+       return httpSecurity.build();
     }
+
 
     @Bean
     // O "@Bean" serve para exportar uma classe para o Spring, fazendo com que ele consiga carregá-la e realize

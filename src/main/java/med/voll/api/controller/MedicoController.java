@@ -49,6 +49,8 @@ public class MedicoController {
         // Esse método trata requisições GET para listar médicos. Ele acessa o banco de dados, busca todos os registros
         // da entidade "Medico", transforma esses registros em objetos "DadosListagemMedico" e retorna uma lista
         // desses objetos como respostas à solicitação HTTP.
+
+
         var page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
         return ResponseEntity.ok(page);
     }
