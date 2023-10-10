@@ -1,0 +1,1 @@
+ALTER TABLE consulta ADD COLUMN motivo_cancelamento VARCHAR(100);
